@@ -1,18 +1,51 @@
 #!/bin/bash
 
-# Simpke note-taking script
+# -x option os to run script in debug mode
+# it prints every single line and values it executes
 
-#Ask user for input
+# Simple note-taking script
+
+# Ask user for input
+# "help read" - helps with read command
+# "man builtins" - read is a shell builtin
+# -p option give a user a friendly prompt
 read -p "Your note:" note
 
-#get date
+# if we don't want to debug the whole script, we can remove -x and
+# add "set -x" at the point we want to debug
+#set -x
+# get date
 date=$(date)
 
-#get topic
-topic=$1
+# to stop debugging, we add "set +x"
+#set +x
 
-#filename to write to
-filename=~/${topic}notes.txt
+# get topic
+topic="$1"
 
-echo $date: $note >> $filename 
-echo Note \'$note\' saved to $filename
+# filename to write to
+# when we use quotes (""), tilda (~) must be replaced by ${HOME}
+# filename="~/${topic}notes.txt"
+filename="${HOME}/${topic}notes.txt"
+
+# see "help if"
+# space must be added to the beggining and end of condition
+#[[ $str ]] - str is not empty
+#[[ $str="something" ]] - str equals "something"
+#[[ $str="something"]] - always returns true, misses a space at the end
+#[[ -e $fienzme ]] - file $filenam exists
+#[[ -d $dirname ]] - $dirname is a directory
+if [[ $note ]]; then
+    # Add double quotes around variables allways
+    echo "$date: $note" >> "$filename"
+    # if we use single quote (''), we must escape them
+    echo Note \'$note\' saved to $filename
+else 
+    echo "No input; note wasn't saved."
+fi
+
+# Add double quotes around variables allways
+#echo "$date: $note" >> "$filename"
+# if we use single quote (''), we must escape them 
+#echo Note \'$note\' saved to $filename
+#echo "Note '$note' saved to $filenamnote wasn't saved.e"

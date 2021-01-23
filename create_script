@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# create script
+
+#help with condition, type: 'help [['; or 'help test'
+# is there an argument?
+if [[ ! $1 ]]; then
+	echo "Missing argument"
+	exit
+fi
+
+scriptname="$1"
+
+# points to bin dir
+bindir="${HOME}/_bin"
+filename="${bindir}/${scriptname}"
+
+if [[ -e $filename ]]; then
+	echo "File ${filemame} already exists"
+	exit 1
+fi
+
+
+if type "$scriptname"; then
+	echo "There is already a command with name ${scriptname}"
+	exit 1
+fi
+
+# check if dir already exists
+if [[ ! -d $bindir ]]; then
+	if mkdir "$bindir"; then
+		echo "Created ${bindir}"
+	else
+		echo "Could not create ${bindir}"
+		exit 1
+	fi
+fi
+
+# create a script with a single line
+echo '#!/bin/bach' > "$filename"
+# add executable permission
+chmod u+x "$filename"
+# open with editor
+if [[ $EDITOR ]]; then
+	$EDITOR "$filename"
+else
+	# '\' scapes the meaning of '$', so the variable name will be shown
+	echo "Script create: not starting editor becuse \$EDITOR is not set"
+fi
