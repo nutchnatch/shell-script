@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Simpke note-taking script
+
+#Ask user for input
+read -p "Your note:" note
+
+#get date
+date=$(date)
+
+#get topic
+topic=$1
+
+#filename to write to
+filename=~/${topic}notes.txt
+
+echo $date: $note >> $filename 
+echo Note \'$note\' saved to $filename
