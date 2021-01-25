@@ -1,0 +1,88 @@
+1-printf
+
+To print a formated string,
+$ printf "hello %s, how are you?\n" "$USER"
+
+To replace a give expression by a give value:
+$ printf "p%st\n" a e i o u
+
+To give more tha one value:
+$ printf "%ss home is in %s" $USER $HOME
+
+To output content of ls in  specific format:
+$ printf "|%20s |%20s |\n" $(ls)
+
+Save the content of printf to a variable:
+printf -v greeting "hello %s, how are you?\n" $USER
+
+More info found in: 
+	http://goo.gl/ZThKCj
+	help printf
+	man printf
+	man 3 printf
+
+
+2- read
+-n or -N specifies the number of characters to read
+-s will suppress output (useful for passwords)
+-r disallows escape sequences, line continuation (good habit)
+
+read x y - reads the first argument to x and the second to y
+	ex: read xy
+		input "1 2 3": x=1, y="2 3"
+
+Read input and print it out to the screen:
+$ read -r; echo $REPLY
+
+IFS - input fied separator (separate words in a string)
+To assign 2 values to different values separated by colon:
+$ IFS=: read a b
+1:2
+
+
+3 - Standards Streams
+input, output, error
+
+0 - Standard input (stdin)
+	/dev/stdin
+1 - Standard output (stdout)
+	/dev/stdout
+2 - Standard Error (stderr)
+	/dev/stderr
+	used for diagnosis or error message
+/dev/null - discards all data sent to it (trash can for bits)
+
+4 - Redirection
+input redirection:
+	grep milk < shoppingnotes.txt (reads from standard input, in this case it is file shoppingnotes.txt)
+output redirection: > (overrides existing files)
+	ls > listing.txt
+append data to the end of a file: >>
+pipes
+	ls | grep x (chain output from ls to the inout of grep)
+
+5 - Redirection 2
+redirecti witn N>
+	cmd 2> /dev/null (discards all errors - output redirected to trash)
+	the default standart output is 1
+redirect to a specific stream with >&N
+	>&2 sends output to standard error stream (equivalent to 1>&2)
+	2>&1 sends errors to standard input stream 
+redirect to a file and also to a standard output
+	cmd > logfile 2>&1
+	don't do this: cmd > logfile 2> logfile (overrides the same file)
+	Don't use &> or >& (points to the same file)
+allowed anywhere on the command line, but order matters
+	cmd < inputfile > outputfile  (those 2 lines do the same, redirects output to outputfile and input from inputfile)
+	>outputfile cmd < inputfile
+
+	cmd >logfile 2>&1 (sends output and errors to the logfile)
+	2>&1 >logfile cmd (send errors to stdout)
+
+To send content of ls to file demo:
+	ls > demo
+	tn > demo
+Read from a variable note:
+	tn < note
+Outputiong everything tp demo
+	tn > demo 2>&1

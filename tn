@@ -41,7 +41,7 @@ if [[ $note ]]; then
     # if we use single quote (''), we must escape them
     echo Note \'$note\' saved to $filename
 else 
-    echo "No input; note wasn't saved."
+    echo "No input; note wasn't saved. 1>&2
 fi
 
 # Add double quotes around variables allways
