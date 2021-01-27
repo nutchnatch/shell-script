@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# tries to handle tar commands in an inteligent way
+# Disclaimer: This is a demo for the case statement, not a production-ready script!
+# USe: mytar dir file
+# This will compress the directory dir into file
+
+# Use: mytar filename
+# This will extract the file
+
+if [[ ! $1 ]]; then
+	echo "Need a file or a directory as first argument" >&2
+	exit 1
+fi
+
+if [[ ! -e $1 ]]; then
+	echo "File or directory $1 not found." >&2
+	exit 2
+fi
+
+if [[ -d $1 ]]; then
+	# Is a directory: create archive
+	operation="c"
+	if [[ ! $2 ]]; then
+		echo "Need a name of file or directory to create as second argument" >&2
+		exit 1
+	fi
+	tarfile="$2"	
+	dir="$1"
+else
+	# Is (probably) a file: try to extract
+	operation="x"
+	tarfile="$1"
+	dir=""
+fi
+
+case $tarfile in
+	*.tgz|*.gz|*.bzip2)
+		zip="z"
+		echo "Using gzip" >&2;;
+	*.bz|*.bz2|*.bzip|*.bzip2)
+		zip="j"
+		echo "Using bzip2" >&2;;
+	*.Z)
+		zip="Z"
+		echo "No compression used" >&2;;
+	*)
+		echo "Uknown extension: ${tarfile}" >&2
+		exit 3;
+esac
+
+command="tar ${operation}${zip}f $tarfile"
+if [[ $dir ]]; then
+	command="${command} $dir"
+fi
+
+if ! $command; then
+	echo "Error tar exited with status $?" >&2
+	exit 4
+fi
+
+echo "Ok" >&2
+exit 0

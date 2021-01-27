@@ -1,0 +1,11 @@
+. && 
+	Will execute next statement only if previous one succeeded
+	ex: mkdir newdir && cd newdir
+. ||
+	Will execute next statement only if previous one failed
+	ex: [[ $1 ]] || echo "missing argument" >&2
+. Combine the statements:
+	ex: [[ $1 ]] || echo "missing argument" >&2 && exit 1
+		- Don't use that example, it will always exit
+		- either, use grouping:
+			[[ $1 ]] || { echo "missing" >&2; exit1; }
