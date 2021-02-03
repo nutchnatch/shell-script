@@ -1,0 +1,33 @@
+
+- spetial variables
+	* positional parameter $1. Above 9, use braces: ${10}, ${25}
+	* $* and $@ - all parameters
+	* $# - number of arguments
+	* $0
+
+- $0
+	holds the name of the script as it was called
+
+- $@ 
+	* all alguments, 
+	* equivalent to $1, $2, $3, $4, $5 ... $N
+	* doible quoted: "$1" "$2", parameter values stay instact even if we have space 
+
+- $*
+	* equivalent to $1 $2 $3 ... $N
+	* if quoted, return whole argument
+	* don't use this, use $@instead
+
+- $#
+	* number of arguments
+
+* create a synmobic link:
+ln -s scriptname sn2
+
+- shift
+	* removes the first argument, and all remaining arguments shift
+	* $2 -> $1 (arg $1 contains the args previously contained by $2)
+	* $3 -> $2
+	* $4 -> $3
+	* $# is lowered by 1
+	* shift 3 - removes three arguments

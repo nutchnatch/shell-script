@@ -1,0 +1,52 @@
+Functions
+	- let you define your own commands, like
+		* name() {...}
+	- after, the code inside braces can be run as a command
+	- other conventions:
+		* function() {...}
+		* function name {...}
+	- function can be give arguments as inputs, and can return output
+	- positional parameters are available for function arguments
+		* $1, $2
+	- name functions correctly
+		* if you name a functions as "ls", it will override the "ls" command
+	- return valus is found with $?
+
+	- bash variables are globally visible 
+		* in a function, we can make a variable local to that function
+		* use "declare" or "local" for that purpose
+	- to exit a function
+		* use the command "exit"
+		* or use return command
+			+ returns a status code, like exit
+			+ without return statement, function returns status of last statement
+		* how to return any other value
+			+ use global variable declared outside the function
+			+ or send data to output and use command substitution
+	- to export a function
+		* export -f fun
+			+ that function will be available from other scripts
+
+Here document: <<
+	- takes output from <<END END and add it as intput of cat:
+		cat <<END
+		 hello
+		END
+		* END is a word of your choice, it can be other string
+		* after <<END, when bash  sees it again, it will use what is left in between as input of "cat" (in this case)
+
+pipe:
+	- $* prints all arguments given to the command
+	- with the pipe, it runs inside a separate bash process
+	- count will be local to that sub-shell and will not be visible to its parent process
+
+Functions redirections:
+	- redirection is allowed immediatly after fucntion
+	- will be executed when function is run
+	fun () { ... } >&2
+		+ every time "fun" is called, output is redirected to error stderr
+	- command in a pipeline runs in a subshell
+		ls | while read -r; do ((++count)); done
+			+ count variable will not be seen outside of the loop
+		du -d 0 */| read_filesizes -> will redirect output of du command to read_filesizes
+			+redirection will not work with the pipe, we should use a temporary file

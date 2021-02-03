@@ -1,0 +1,90 @@
+Parameter Expansion
+	- is a technique which allows powerful string manipulation inside bash
+		* ex: ${#var} -> length of var $var
+	- how to remove a pattern:
+		* ${var#pattern} -> removes shortest match from begin of string
+		* ${var##pattern} -> removes longest match from begin of string
+		* ${var%pattern} -> removes shortest match from end of string
+		* ${var%%pattern} -> removes longest match from end of string
+	- pattern matching is like pathname matching with *, ? and []
+	- examples
+		* i = "/Users/reindert/demo.txt"
+		* ${i#*/} -> I want to remove the shortest pattern from the beginning of the string
+			result: Users/reindert/demo.txt  - just remove leading slash
+		* ${i##*/} -> removes the longest pattern from the beginning of the string
+			result: demo.txt -> * will match everything until word "reidert", then slash will match and we will remove all until the last slash
+		* ${i%.*} -> reemoves the extension of the file
+			result: /Users/reindert/demo -> removes the short as possible the string that start with a dot
+		* ${i%/*} -> removes the file name and leave only the path
+			result: /Users/reindert -> removes the whole file name, including the slash
+
+Search and replace:
+	- ${var/pattern/string} -> name of varianle, slash, pattern to match, string you want to replaces your matches with
+		* replace only the first match with the string
+	- ${var//pattern/string}
+		* replace all the matches
+
+Anchor your pattern
+	- replaces only something at start or at the end of a string
+		* ${var/#pattern/string} - mreplaces beginning of the string
+		* ${var/%pattern/string} - mreplaces end of the string
+
+
+
+Examples:
+	- i="mytxt.txt"
+	- echo ${i/txt/jpg}  -> myjpg.txt
+
+	- echo ${i/%txt/jpg} -> mytxt.jpg   -- the end of the file
+	- echo ${i//txt/jpg} -> myjpg.jpg   -- all occourences
+	- echo ${i//txt/}    -> my.         -- remove ocourence, replace with empty string
+	- echo ${i/%txt/}    -> mytext.     -- replace only the last occourence (same as echo ${i%txt}  )
+	- echo ${i#txt}      -> mytxt.txt   -- replaces nothing because the biggining does not have 'txt'
+	- echo ${i/[yx]/a}   -> matxt.txt   -- replaces pattern [yx] by 'a'
+	- echo ${i//[yx]/a}  -> matat.tat   -- replaces all occourences of [yx] by 'a'
+
+
+Default values:
+	- detects wheter your variable is set, and if not, give it a default value
+		* ${var:-value}
+			+ will evaluate (return) to "value" if var is empty or unset
+		* ${var-value}
+			+ similar, but only if var is unset
+
+Assign a default value:
+	- ${var:=values}
+		+ if was empty or unset, this evaluates to "value" and assign it to var
+	- ${var=value}
+		+ similar, but only if var is unset
+
+Several more useful Parameter expansions
+	- http://goo.gl/xRH03u
+
+
+Conditional Expressions:
+	==, !== operators in [[..]] do pattern matching
+		== is the same operator as =
+	- [[ $var==pattern]] - returns true when $var matches the pattern
+	- Pattern matching is like pathname matching with *, ? and []
+		+ example [[ $filename == *.txt]] - returns true if filename variable contains a file ending with .txt
+
+	- use quotes to force string matching
+		+ [[ $var == "[0-9]*" ]] - do string matching, matches the string "[0-9]*"
+
+	- examples:
+		$ [[ hello = h*o ]] && echo yep  - '*' is as a pattern matching which will match "ell"
+		$ yep
+		$ [[ hello = "h*o" ]] && echo yep - does string matching, hence will not match (hello = "h*o")
+		$ [[ "h*o" = "h*o" ]] && echo yep - does string matching, and return true
+		$ yep
+
+Regular Expressions
+ 	- uses POSIX extended regular expressions
+ 		 ? matches the token before it 0 or 1 times
+ 		 	[0-9]? will match a single digit or nothing at all
+ 		 * matches the token before it for any number of times
+ 		 	[a-z]* will match any (0 or more) lowercase text or nothing at all (match empty string)
+ 		 + matches the token before it for one or more times
+ 		 	[0-9] will match 1 or more digits (does not match empty string)
+ 		 ^ matches start of a string
+ 		 $ matches end of string

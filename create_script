@@ -9,40 +9,58 @@ if [[ ! $1 ]]; then
 	exit
 fi
 
-scriptname="$1"
+declare open_editor=""
+if [[ $# -eq 1 ]]; then
+	open_editor="true"
+fi
+
 
 # points to bin dir
-bindir="${HOME}/_bin"
-filename="${bindir}/${scriptname}"
-
-if [[ -e $filename ]]; then
-	echo "File ${filemame} already exists"
-	exit 1
-fi
+declare -r bindir="${HOME}/_bin"
 
 
-if type "$scriptname" > /dev/null 2>&1; then
-	echo "There is already a command with name ${scriptname}"
-	exit 1
-fi
 
 # check if dir already exists
 if [[ ! -d $bindir ]]; then
 	if mkdir "$bindir"; then
-		echo "Created ${bindir}"
+		echo "Created ${bindir}" >&2
 	else
-		echo "Could not create ${bindir}"
+		echo "Could not create ${bindir}" >&2
 		exit 1
 	fi
 fi
 
-# create a script with a single line
-echo '#!/bin/bach' > "$filename"
-# add executable permission
-chmod u+x "$filename"
+while [[ $1 ]]; do
+	scriptname="$1"
+	filename="${bindir}/${scriptname}"
+
+	if [[ -e $filename ]]; then
+		echo "File ${filemame} already exists" >&2
+		shift
+		continue
+	fi
+
+	if type "$scriptname" > /dev/null 2>&1; then
+		echo "There is already a command with name ${scriptname}" >&2
+		shift
+		continue
+	fi
+
+	# create a script with a single line
+	echo '#!/bin/bash' > "$filename"
+	# add executable permission
+	chmod u+x "$filename"
+
+	shift
+done
+
+
 # open with editor
-if [[ $EDITOR ]]; then
-	$EDITOR "$filename"
+if [[ $open_editor ]]; then
+	echo opening
+	if [[ $EDITOR ]]; then
+		$EDITOR "$filename"
+	fi
 else
 	# '\' scapes the meaning of '$', so the variable name will be shown
 	echo "Script create: not starting editor becuse \$EDITOR is not set"

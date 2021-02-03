@@ -1,0 +1,88 @@
+#!/bin/bash
+
+# This script prints a range of numbers
+# Usage: count [-r] [-b n] [-s n] stop
+# -b gives the number to begin with (default: 0)
+# -r reverses the count
+# -s sets step size (default: 1)
+# counting will stop at stop
+
+# ex: ./count -s 2 10
+
+usage () {
+	cat <<END
+count [-r] [-b n] [-s n] stop
+
+Print each number up to stop, beginning at 0
+	-b gives the number to begin with (default: 0)
+	-r reverses the count
+	-s sets step size (default: 1)
+END
+}
+
+error () {
+	echo "Error: $1"
+	usage
+	exit $2
+} >&2
+
+isnum () {
+	# verify if first agument is actualy a number
+	[[ $1 =~ ^[0-9]+$ ]]
+}
+
+declare reverse=""
+declare -i begin=0
+declare -i step=1
+
+while getopts ":b:s:r" opt; do # b, s, r are the options to be accepted and will be saved on opt
+	case $opt in
+		r)
+			reverse="yes"
+			;;
+		b)
+			# [[ ${OPTARG} =~ ^[0-9]+$ ]] || { echo "${OPTARG} is not a number" >&2; exit 1; }
+			isnum ${OPTARG} || error "${OPTARG} is not a number" 1
+			start="${OPTARG}"
+			;;
+
+		h)
+			usage
+			exit 0
+			;;
+		s)
+			isnum ${OPTARG} ]] || error "${OPTARG} is not a number" 1
+			step="${OPTARG}"
+			;;
+		:)
+			echo "Option -${OPTARG} is missing argument"
+			usage
+			exit 1
+			;;
+		\?)  # either for not acceptable arguments or missing argument
+			echo "Unkown option: -${OPTARG}" >&2
+			usage
+			exit 1
+			;;
+	esac
+done
+
+# gives the index of the next option to handle
+# shift all arguments and make sure that last argument in in $1
+shift $(( OPTIND -1 ))
+
+# [[ $1 ]] || { echo "missing and argument" >&2; exit 1; }
+[[ $1 ]] || error "missing and argument" 1
+declare end="$1"
+
+if [[ ! $reverse ]]; then
+	for (( i=start; i <= end; i+=step )); do
+		echo $i
+	done
+else
+	for (( i=end; i >= start; i-=step )); do
+		echo $i
+	done
+fi
+
+exit 0

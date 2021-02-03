@@ -1,0 +1,9 @@
+Exporting variables:
+	- By default, variables are local to your script or terminal session
+
+To make a variable available to to other commands, export it:
+	- avaikable to subprosses
+	- you cannot pass a variable to the program that runs your script
+	$ export var="value"
+	or
+	$ declare -x var="value"

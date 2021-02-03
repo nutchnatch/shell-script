@@ -1,0 +1,50 @@
+- Variables attributes which can be set with the command declare
+- You calk tell bash that a variable should only hold integers
+	* this can be done with arithmetic expressions to do calculations
+- Variables can be set as read-only 
+
+- Variables hold simple string values without a type
+	* but we can give them extra attributes
+	* they can be set on/off with declare command
+	* also can be done with typeset, but it is deprecated
+
+- Declare Integer Variables:
+	$ declare -i num (num is the name of the variable)
+	* setting it to someething else (not an integer), will not give an error
+	* instead, it will set the value to 0
+
+- Unset an attribute with +
+	$ declare +i num (removes integer attribute from variable num)
+
+- Arithmetic evaluation:
+	$ declare -i p
+	$ p="4+5"
+	$ echo p
+	$ 9
+	$ p="test"
+	$ echo p
+	$ 0
+
+- ((..))
+	$ let n=100/2
+	$ echo $n
+	$ 50
+
+	((++x))
+	((p=x/100))
+	((p=$(ls | wc -l) * 10))
+	(()) is similar to let command
+
+	* ((..)) can be used in if, while
+		-> 0 is false, anything greater than 0 is true
+		-> (( 0 )) || echo "fale"
+
+- $((..))
+	* this is a substitution, not a command
+	$ p=$((x/100)
+
+- pitfall: numbers with leading zeros are interpreted as octal
+	- So 010=8
+
+More in: http://goo.gl/HnPkiq or the bash man page
+

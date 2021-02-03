@@ -1,0 +1,37 @@
+- getops
+	* help to parse arguments
+	* expects options to start with a dash (-x)
+	* allow options that take an argument (-f file)
+	* all options must start with a dash (-)
+	* "--" will be seen as the end of options and will no be processed
+	* arguments for options will be put in OPTARG
+	* OPTIND holds the index of the next argument to be processed
+
+- getops optstring name
+- optstring
+	* a list of expected options
+	* ab will let your script handle an option -a and/or -b
+	* append a colon (:) in case you have an option that take an argument
+	* "a:b" - a will take an argument nut b wont
+
+- name
+ 	* name of the variable
+ 	* every timne you call getopts, it will place the next option into $name
+ 	* this means we have to call getops multiple times
+ 	* getopts returns false when no more options are left
+
+ - handle errors
+ 	* default non-silent mode
+ 	* if anything goes wrong, the option variable NAME holds "?"
+
+ - processe errors:
+ 	* start option string with a colon (silent mode)
+ 		":b:s:r"  - will not print anything
+ 
+ - unknown option
+ 	* "?" in option variable NAME
+ 	* actual option in OPTARG
+
+ - missing option argument
+ 	* ":" in option variable NAME
+ 	* actual option in OPTARG

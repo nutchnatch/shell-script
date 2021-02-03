@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# A simple guessing game
+
+# Get a random number < 100
+declare -ir target=$(( ($RANDOM % 100) + 1)) # -ir means read only integer
+
+# Initialize the user's guess
+declare -i guess=
+
+until (( $guess == $target )); do
+	read -p "Take a guess: " guess
+
+	# if guess is 0, it was not a number
+	(( guess )) || continue  # continue to next if guess is 0
+
+	if (( guess < target )); then
+		echo "Higher!"
+	elif (( guess > target )); then
+		echo "Lower!"
+	else
+		echo "You found it!"
+	fi
+done
+exit 0;

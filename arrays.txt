@@ -1,0 +1,33 @@
+- store a value in array
+	* x[0]="some"
+	* x[1]="some"
+
+	ar=(this is an array)
+	list array:
+		declare -p ar
+
+- retrieve a value:
+	* ${x[0]}:some
+	* ${x[1]}:word
+	${x[@]} or ${x[*]} - retrieve all values (quoting works like $*, $@)
+
+- declare an array
+	* declare -a x (or simply assign with index like above)
+
+- initialize an array:
+	* ar=(1 2 3 a b c)
+
+- count number of elements
+	* ${#array[@]}
+
+- indices in a array
+	* ${!array[@]}
+	* there can be gaps in indeces, it does not care is there is a gap between index 13 an 15
+
+- cannot export array
+
+- bash 4 supports associative arrays
+	- elements are stores and retrieced by a name, not by index
+	- declare -A array - for that, they must be declared like this
+
+More in: http://goo.gl/g6xtca
