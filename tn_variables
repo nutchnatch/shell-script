@@ -33,7 +33,7 @@ declare notesdir=${NOTESDOR:-$HOME}
 
 if [[ ! -d $notesdir ]]; then
 	# if I can't create the dir, print an error msg
-	mkdir "${notesdir}" 2> /dev/null || { echo "Cannot make directory ${notesdir}" 1>&2; exit 1; }
+	mkdir -- "${notesdir}" 2> /dev/null || { echo "Cannot make directory ${notesdir}" 1>&2; exit 1; }
 fi
 
 # filename to write to
@@ -43,7 +43,7 @@ declare -r filename="${notesdir}/${topic}notes.txt"
 
 if [[ ! -f $filename ]]; then
         # if I can't create the dir, print an error msg
-        touch "${filename}" 2> /dev/null || { echo "Cannot create filename ${filename}" 1>&2; exit 1; }
+        touch -- "${filename}" 2> /dev/null || { echo "Cannot create filename ${filename}" 1>&2; exit 1; }
 fi
 
 # check if file is writeable

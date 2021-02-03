@@ -88,3 +88,21 @@ Regular Expressions
  		 	[0-9] will match 1 or more digits (does not match empty string)
  		 ^ matches start of a string
  		 $ matches end of string
+
+ End of options
+ 	- prevents nesty bugs
+ 	- denoted by two dashes --
+ 	- supported by many UNIX commands
+ 	- arguments after this will not interpreted as options
+ 	- makes it safer when working with data that starts with a dash
+ 		+ example with a file called "-l.txt", trying to remove it with rm -l.txt,
+ 			would give an error claiming not to know options -l
+ 		+ instead, we can do it like
+ 			rm -- -l.txt  (after rm, is stated that it is the end of options)
+ 		+ it is nice when using loops like:
+ 			for i in *.txt; do touch -- $i; done   (touch all my text files in my current dir)
+ 				+ if there is a file that starts with '-', then we use '--' after touch command
+ 		+ good habit
+ 			- when using a variable as argument for a command
+ 			- and the contents of the varianble are not under our control
+ 			
