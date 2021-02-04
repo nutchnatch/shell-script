@@ -1,0 +1,73 @@
+Running code from a file:
+	- Using a hashbang and running it as a command
+		+ will start a bash subprocess
+		+ execute permission has to be set
+
+	- If the script does not have a hash bang
+		+ it can be run like:
+			* bash myscript (in this case, no permissions are necessary)
+			* to debug the script:
+				- bash -x myscript
+	- Import code in the current shell process
+		source myscript   or
+		.myscript  (in this case it will be execute in the current process)
+		this is basically what happens with .bashrc (bash starts up, reads the code in the bashrc in the current process)
+	- examples:
+		bash count
+		bash -x count
+
+	- To reuse functions, extract them to other file (source library), and use source to read them in other scripts
+
+
+Background and nohup
+	- put a command in the bcakground with &
+		ex: myscript & (put my script in the background)
+			+ means that it will be discon
+			+ it will be suspended if it tries to read input from the terminal
+				* this is useful if we want to do something while having a script running i background
+	- keep your script running when you exit  the terminal session
+		+ ex: when you have a remote connection, you have to logout, but you don't want your script to exit
+			* nohup myscript (nohup - means no hang up)
+	- if you want to run your script with lower priority, so it does not comsume a lot of resources
+		+ nice myscript
+	- combining thosecommands:
+		nohup nice myscript &
+		ex: $ nohup ./stillhere > log &
+			- sending output to log file
+				tail -f log  -> follow log file
+
+
+Redirecting with exec
+	- redirect I/O for the shole script
+		+ useful for logging
+			$ exec > logfile 2>errorlog
+				-> redirect output to standerd out to logfile and output to standard error to error log
+
+Running script another time 
+	- this is to run the script when you are not there, or in another interval
+		+ At
+			* this command will execute your script at a specific time
+			* ex: at -f myscript noon tomorrow
+				tell to run the script at noon, tomorrow
+		+ Cron
+			* will run the script according to a schedule
+				- weekly, daily, hourly
+			* on Mac OS, use launchd - provides specific features, that cron doe not
+			* on Ubuntu, you may use Upstart - 
+
+Customize bash behavior
+	- set 
+		* has a lot ot ptions, not intende to use on prod, mostly on debug and to be removed later
+			-x -> prints each command with its arguments as it is executed
+			-u -> gives an error when using an unintialized variable (or typos) and exits the script
+			-n -> read commands but do not execute (read the script, but does not execute it)
+			-v print each command as it is read
+			-e -> exits script whenever a command fails (through status code) (unless you check status code with if, while, until, ||, &&)
+				-  may give unpredictable results
+
+	- shop
+		* can set many options with -s, unset with -u
+			+ shop -s nocaseglob - ignore case with pathname expansion
+			+ shop -s extglob - enable extended pattern matching
+			+ shop -s dotglob - include hidden files with pathname expansion
+			+ set -o noclobber - don't overwrite files on redirection operations

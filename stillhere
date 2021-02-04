@@ -1,0 +1,12 @@
+#!/bin/bash
+
+IF [[ $1 == "-l" ]]; then
+	# redirects output for the whole script to logfile
+	exec >logfile
+fi
+
+declare -i i=0
+while true; do
+	echo "still here $((++i))"
+	sleep 1
+done
