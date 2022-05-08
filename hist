@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-# macos come with bach version 3 by default, so we use another version of bash --  see above
+# macos come with bash version 3 by default, so we use another version of bash --  see above
 
 # This script prints a little histogram of how much space 
 # the directories in the current working directory use
