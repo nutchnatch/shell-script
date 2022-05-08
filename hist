@@ -15,7 +15,7 @@ error () {
 
 my_mktemp () {
 	# if mktmp requires an agrument, the second parte of the statement is executed
-	mktmp || mktemp -t hist
+	mktemp || mktemp -t hist
 } 2> /dev/null  # redirects errors to /dev/null, so errors are not seen on the terminal
 
 # check we are using bash 4
